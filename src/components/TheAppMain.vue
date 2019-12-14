@@ -24,7 +24,11 @@
     </v-app-bar>
 
     <v-content>
-      <AppCalendar/>
+      <v-container>
+        <AppCalendar v-model="focus" />
+        <div class="debug">{{focus}}</div>
+        <div class="debug"><v-btn @click="gotoToday">Today</v-btn></div>
+      </v-container>
     </v-content>
   </v-app>
 </template>
@@ -33,15 +37,22 @@
 import { createComponent, ref } from '@vue/composition-api';
 import AppCalendar from '@/components/AppCalendar.vue';
 
+const today = new Date().toISOString().substring(0, 10);
+
 export default createComponent({
   components: {
     AppCalendar,
   },
   setup: () => {
     const nav = ref(false);
+    const focus = ref(today);
+
+    function gotoToday () { focus.value = today; }; // debug
 
     return {
       nav,
+      focus,
+      gotoToday,
     };
   },
 });
