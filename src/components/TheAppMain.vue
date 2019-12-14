@@ -28,6 +28,11 @@
         <AppCalendar v-model="focus" />
         <div class="debug">{{focus}}</div>
         <div class="debug"><v-btn @click="gotoToday">Today</v-btn></div>
+        <div class="debug">
+          <v-btn @click="dialog = true">Open</v-btn>
+          <span class="debug">{{dialog}}</span>
+          <AppFormDialog v-model="dialog" :date="focus"/>
+        </div>
       </v-container>
     </v-content>
   </v-app>
@@ -36,21 +41,25 @@
 <script lang="ts">
 import { createComponent, ref } from '@vue/composition-api';
 import AppCalendar from '@/components/AppCalendar.vue';
+import AppFormDialog from '@/components/AppFormDialog.vue';
 
 const today = new Date().toISOString().substring(0, 10);
 
 export default createComponent({
   components: {
     AppCalendar,
+    AppFormDialog,
   },
   setup: () => {
     const nav = ref(false);
+    const dialog = ref(false);
     const focus = ref(today);
 
     function gotoToday () { focus.value = today; }; // debug
 
     return {
       nav,
+      dialog,
       focus,
       gotoToday,
     };
