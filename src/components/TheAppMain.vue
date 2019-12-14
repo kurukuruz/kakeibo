@@ -24,18 +24,18 @@
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <AppCalendar/>
     </v-content>
   </v-app>
 </template>
 
 <script lang="ts">
 import { createComponent, ref } from '@vue/composition-api';
-import HelloWorld from '@/components/HelloWorld.vue';
+import AppCalendar from '@/components/AppCalendar.vue';
 
 export default createComponent({
   components: {
-    HelloWorld,
+    AppCalendar,
   },
   setup: () => {
     const nav = ref(false);
