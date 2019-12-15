@@ -6,7 +6,11 @@
     <v-card>
       <v-card-title>{{date}}</v-card-title>
       <v-card-text>
-        test text
+        <AppCategorySelect
+          v-model="categoryId"
+          :categories="categoriesShown"
+        />
+        <div>{{categoryId}}</div>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -14,13 +18,19 @@
 
 <script lang="ts">
 import { createComponent, ref, watch, SetupContext, computed } from '@vue/composition-api';
+import { Category, Division } from '@/repository';
+import AppCategorySelect from '@/components/AppCategorySelect.vue';
 
 type Props = {
   value: boolean;
   date: string;
+  categories: Category[],
 }
 
 export default createComponent({
+  components: {
+    AppCategorySelect,
+  },
   props: {
     value: {
       type: Boolean,
@@ -29,6 +39,10 @@ export default createComponent({
     date: {
       type: String,
       default: '',
+    },
+    categories: {
+      type: Array,
+      default: () => [],
     },
   },
   setup: (props: Props, context: SetupContext) => {
@@ -40,8 +54,16 @@ export default createComponent({
 
     const valueComputed = computed(() => props.value);
     watch(valueComputed, (newState: boolean) => { dialog.value = newState; });
+
+    const division = ref(Division.PAYOUT);
+    const categoriesShown = computed(() => props.categories.filter(cate => cate.division === division.value));
+
+    const categoryId = ref('');
+
     return {
       dialog,
+      categoryId,
+      categoriesShown,
     };
   },
 });

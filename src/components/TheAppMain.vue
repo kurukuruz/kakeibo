@@ -31,7 +31,11 @@
         <div class="debug">
           <v-btn @click="dialog = true">Open</v-btn>
           <span class="debug">{{dialog}}</span>
-          <AppFormDialog v-model="dialog" :date="focus"/>
+          <AppFormDialog
+            v-model="dialog"
+            :date="focus"
+            :categories="categories"
+          />
         </div>
       </v-container>
     </v-content>
@@ -39,7 +43,9 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref } from '@vue/composition-api';
+import { createComponent, ref, Ref } from '@vue/composition-api';
+import { Category } from '@/repository';
+import { getAllCategories } from '@/repository/dba-categories';
 import AppCalendar from '@/components/AppCalendar.vue';
 import AppFormDialog from '@/components/AppFormDialog.vue';
 
@@ -54,6 +60,8 @@ export default createComponent({
     const nav = ref(false);
     const dialog = ref(false);
     const focus = ref(today);
+    const categories: Ref<Category[]> = ref([]);
+    getAllCategories().then((data) => { categories.value = data; });
 
     function gotoToday () { focus.value = today; }; // debug
 
@@ -61,6 +69,7 @@ export default createComponent({
       nav,
       dialog,
       focus,
+      categories,
       gotoToday,
     };
   },
