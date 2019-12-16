@@ -10,7 +10,24 @@
           v-model="categoryId"
           :categories="categoriesShown"
         />
-        <div>{{categoryId}}</div>
+        <v-textarea
+          v-model="memo"
+          rows="2" auto-grow
+          row-height="26"
+        ></v-textarea>
+        <v-row>
+          <v-col>
+            <v-btn
+              @click="toggleDivision"
+            >{{divisionName}}<v-icon>mdi-sync</v-icon></v-btn>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col>
+            <div
+              class="text-end headline black--text"
+            >{{amount | amountFilter}}</div>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -19,6 +36,7 @@
 <script lang="ts">
 import { createComponent, ref, watch, SetupContext, computed } from '@vue/composition-api';
 import { useInnerValue, ValueProps } from '@/commons/inner-value';
+import amountFilter from '@/filters/amount-filter';
 import { Category, Division } from '@/repository';
 import AppCategorySelect from '@/components/AppCategorySelect.vue';
 
@@ -30,6 +48,9 @@ interface Props extends ValueProps<boolean> {
 export default createComponent({
   components: {
     AppCategorySelect,
+  },
+  filters: {
+    amountFilter,
   },
   props: {
     value: {
@@ -49,14 +70,37 @@ export default createComponent({
     const { innerValue } = useInnerValue(props, context);
 
     const division = ref(Division.PAYOUT);
+    const divisionName = computed(() => {
+      switch (division.value) {
+        case Division.PAYOUT: return '支出';
+        case Division.INCOME: return '収入';
+      }
+    });
+    function toggleDivision () {
+      switch (division.value) {
+        case Division.PAYOUT:
+          division.value = Division.INCOME;
+          break;
+        case Division.INCOME:
+          division.value = Division.PAYOUT;
+      }
+    }
+
     const categoriesShown = computed(() => props.categories.filter(cate => cate.division === division.value));
 
     const categoryId = ref('');
 
+    const memo = ref('');
+
+    const amount = ref(1000);
     return {
       innerValue,
       categoryId,
       categoriesShown,
+      divisionName,
+      toggleDivision,
+      memo,
+      amount,
     };
   },
 });
