@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="dialog"
+    v-model="innerValue"
     max-width="600"
   >
     <v-card>
@@ -18,11 +18,11 @@
 
 <script lang="ts">
 import { createComponent, ref, watch, SetupContext, computed } from '@vue/composition-api';
+import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import { Category, Division } from '@/repository';
 import AppCategorySelect from '@/components/AppCategorySelect.vue';
 
-type Props = {
-  value: boolean;
+interface Props extends ValueProps<boolean> {
   date: string;
   categories: Category[],
 }
@@ -46,14 +46,7 @@ export default createComponent({
     },
   },
   setup: (props: Props, context: SetupContext) => {
-    const dialog = ref(props.value);
-
-    watch(dialog, (newState: boolean) => {
-      context.emit('input', newState);
-    });
-
-    const valueComputed = computed(() => props.value);
-    watch(valueComputed, (newState: boolean) => { dialog.value = newState; });
+    const { innerValue } = useInnerValue(props, context);
 
     const division = ref(Division.PAYOUT);
     const categoriesShown = computed(() => props.categories.filter(cate => cate.division === division.value));
@@ -61,7 +54,7 @@ export default createComponent({
     const categoryId = ref('');
 
     return {
-      dialog,
+      innerValue,
       categoryId,
       categoriesShown,
     };

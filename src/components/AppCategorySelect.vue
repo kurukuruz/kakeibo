@@ -15,12 +15,12 @@
 
 <script lang="ts">
 import { createComponent, SetupContext, ref, watch, computed } from '@vue/composition-api';
+import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import { Category } from '@/repository';
 import AppCategorySelectItem from '@/components/AppCategorySelectItem.vue';
 
-type Props = {
-  value: string;
-  categories: Category[],
+interface Props extends ValueProps<string> {
+  categories: Category[];
 }
 
 export default createComponent({
@@ -38,13 +38,7 @@ export default createComponent({
     },
   },
   setup: (props: Props, context: SetupContext) => {
-    const innerValue = ref(props.value);
-    watch(innerValue, (newValue: string) => {
-      context.emit('input', newValue);
-    });
-
-    const valueComputed = computed(() => props.value);
-    watch(valueComputed, (newValue: string) => { innerValue.value = newValue; });
+    const { innerValue } = useInnerValue(props, context);
 
     return {
       innerValue,

@@ -23,7 +23,7 @@
 
     </v-toolbar>
     <v-calendar
-      v-model="focus"
+      v-model="innerValue"
       ref="calendar"
       type="month"
     >
@@ -41,12 +41,9 @@
 
 <script lang="ts">
 import { createComponent, ref, SetupContext, computed, watch, toRefs, reactive } from '@vue/composition-api';
+import { useInnerValue, ValueProps } from '@/commons/inner-value';
 
 const today = new Date().toISOString().substring(0, 10);
-
-type Props = {
-  value: string;
-};
 
 export default createComponent({
   props: {
@@ -55,28 +52,24 @@ export default createComponent({
       default: today,
     },
   },
-  setup: (props: Props, context: SetupContext) => {
-    const focus = ref(props.value);
+  setup: (props: ValueProps<string>, context: SetupContext) => {
+    const { innerValue } = useInnerValue(props, context);
 
-    watch(focus, (newDate: string) => { context.emit('input', newDate); });
+    const focusYearMonth = computed(() => innerValue.value.substring(0, 7));
 
-    const focusYearMonth = computed(() => focus.value.substring(0, 7));
-
-    const valueComputed = computed(() => props.value);
-    watch(valueComputed, (newDate: string) => { focus.value = newDate; });
-    function focusOn (date: string) { focus.value = date; }
-    function gotoToday () { focus.value = today; }
+    function focusOn (date: string) { innerValue.value = date; }
+    function gotoToday () { innerValue.value = today; }
 
     function dayColor (date: string): string {
       switch (date) {
-        case focus.value: return 'accent';
+        case innerValue.value: return 'accent';
         case today: return 'blue-grey lighten-4';
         default: return '';
       }
     }
 
     return {
-      focus,
+      innerValue,
       focusYearMonth,
       focusOn,
       gotoToday,
