@@ -35,6 +35,11 @@
           @update:history="updateHistory"
         />
       </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn text @click="closeSelf">キャンセル</v-btn>
+        <v-btn text @click="register">登録</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -43,7 +48,8 @@
 import { createComponent, ref, watch, SetupContext, computed } from '@vue/composition-api';
 import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import amountFilter from '@/filters/amount-filter';
-import { Category, Division } from '@/repository';
+import { Category, Division, Entry } from '@/repository';
+import { registerEntry } from '@/repository/dba-entries';
 import AppCategorySelect from '@/components/AppCategorySelect.vue';
 import Calculator from '@/components/Calculator.vue';
 
@@ -106,6 +112,21 @@ export default createComponent({
       calcHistory.value = newValue;
     }
 
+    function register (): void {
+      const entry: Entry = {
+        date: props.date,
+        categoryId: categoryId.value,
+        memo: memo.value,
+        division: division.value,
+        amount: amount.value,
+      };
+      registerEntry(entry);
+      closeSelf();
+    }
+
+    function closeSelf (): void {
+      innerValue.value = false;
+    }
     return {
       innerValue,
       categoryId,
@@ -116,6 +137,8 @@ export default createComponent({
       amount,
       calcHistory,
       updateHistory,
+      register,
+      closeSelf,
     };
   },
 });
