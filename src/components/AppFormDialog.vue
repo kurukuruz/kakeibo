@@ -15,19 +15,25 @@
           rows="2" auto-grow
           row-height="26"
         ></v-textarea>
-        <v-row>
-          <v-col>
+        <v-row dense>
+          <v-col cols="4">
             <v-btn
               @click="toggleDivision"
             >{{divisionName}}<v-icon>mdi-sync</v-icon></v-btn>
           </v-col>
-          <v-spacer></v-spacer>
           <v-col>
-            <div
-              class="text-end headline black--text"
-            >{{amount | amountFilter}}</div>
+            <v-input
+              class="headline grey--text text--darken-4 text-end"
+              :messages="calcHistory"
+            >
+              <div>{{amount | amountFilter}}</div>
+            </v-input>
           </v-col>
         </v-row>
+        <Calculator
+          v-model="amount"
+          @update:history="updateHistory"
+        />
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -39,6 +45,7 @@ import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import amountFilter from '@/filters/amount-filter';
 import { Category, Division } from '@/repository';
 import AppCategorySelect from '@/components/AppCategorySelect.vue';
+import Calculator from '@/components/Calculator.vue';
 
 interface Props extends ValueProps<boolean> {
   date: string;
@@ -48,6 +55,7 @@ interface Props extends ValueProps<boolean> {
 export default createComponent({
   components: {
     AppCategorySelect,
+    Calculator,
   },
   filters: {
     amountFilter,
@@ -92,7 +100,12 @@ export default createComponent({
 
     const memo = ref('');
 
-    const amount = ref(1000);
+    const amount = ref(0);
+    const calcHistory = ref('');
+    function updateHistory (newValue: string): void {
+      calcHistory.value = newValue;
+    }
+
     return {
       innerValue,
       categoryId,
@@ -101,7 +114,20 @@ export default createComponent({
       toggleDivision,
       memo,
       amount,
+      calcHistory,
+      updateHistory,
     };
   },
 });
 </script>
+
+<style>
+.v-input.text-end .v-input__slot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.v-input.text-end .v-messages__message {
+  text-align: end;
+}
+</style>
