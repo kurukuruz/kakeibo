@@ -33,10 +33,12 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref, Ref } from '@vue/composition-api';
+import { createComponent, ref, Ref, provide } from '@vue/composition-api';
 import { Category, Book } from '@/repository';
 import { getAllBooks } from '@/repository/dba-books';
 import { getAllCategories } from '@/repository/dba-categories';
+import { BookStoreKey } from '@/store';
+import bookStore from '@/store/book';
 import AppNavigation from '@/components/AppNavigation.vue';
 import AppCalendar from '@/components/AppCalendar.vue';
 import AppFormDialog from '@/components/AppFormDialog.vue';
@@ -58,6 +60,8 @@ export default createComponent({
     getAllCategories().then((data) => { categories.value = data; });
 
     function gotoToday () { focus.value = today; }; // debug
+
+    provide(BookStoreKey, bookStore());
 
     return {
       nav,

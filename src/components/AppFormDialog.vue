@@ -50,6 +50,7 @@ import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import amountFilter from '@/filters/amount-filter';
 import { Category, Division, Entry } from '@/repository';
 import { registerEntry } from '@/repository/dba-entries';
+import { typicalInjection, BookStoreKey } from '@/store';
 import AppCategorySelect from '@/components/AppCategorySelect.vue';
 import Calculator from '@/components/Calculator.vue';
 
@@ -102,6 +103,8 @@ export default createComponent({
 
     const categoriesShown = computed(() => props.categories.filter(cate => cate.division === division.value));
 
+    const { bookId } = typicalInjection(BookStoreKey);
+
     const categoryId = ref('');
 
     const memo = ref('');
@@ -120,7 +123,7 @@ export default createComponent({
         division: division.value,
         amount: amount.value,
       };
-      registerEntry(entry);
+      registerEntry(bookId.value, entry);
       closeSelf();
     }
 
