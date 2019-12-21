@@ -109,3 +109,12 @@ export default createComponent({
   },
 });
 </script>
+
+<style>
+.payout {
+  color: crimson;
+}
+.income {
+  color: darkblue;
+}
+</style>

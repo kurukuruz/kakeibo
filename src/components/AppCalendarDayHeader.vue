@@ -10,7 +10,7 @@
         <v-list-item-subtitle>{{e.memo}}</v-list-item-subtitle>
       </v-list-item-content>
 
-      <div>{{e.amount | amountFilter}}</div>
+      <div :class="[e.division]">{{e.amount | amountFilter}}</div>
     </v-list-item>
   </v-list>
 </template>
