@@ -1,5 +1,16 @@
 <template>
   <div class="home">
-    <h1>This is a home page</h1>
+    <TheAppHome/>
   </div>
 </template>
+
+<script lang="ts">
+import TheAppHome from '@/components/TheAppHome.vue';
+
+export default {
+  name: 'home',
+  components: {
+    TheAppHome,
+  },
+};
+</script>
