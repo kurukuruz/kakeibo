@@ -17,6 +17,11 @@ export default createComponent({
       signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       ],
+      callbacks: {
+        signInSuccessWithAuthResult: () => {
+          return false;
+        },
+      },
     });
   },
 });

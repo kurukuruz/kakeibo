@@ -9,7 +9,7 @@
 import TheAppMain from '@/components/TheAppMain.vue';
 
 export default {
-  name: 'main',
+  name: 'appmain',
   components: {
     TheAppMain,
   },
