@@ -1,16 +1,24 @@
 <template>
   <div>
-    <div id="firebaseui-auth-container"></div>
+    <h1 v-if="signin">You are already signed in.</h1>
+    <div v-else id="firebaseui-auth-container"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { createComponent } from '@vue/composition-api';
+import { createComponent, ref } from '@vue/composition-api';
 import firebase from 'firebase/app';
 import * as firebaseui from 'firebaseui';
 
 export default createComponent({
   setup: () => {
+    const signin = ref(false);
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        signin.value = true;
+      }
+    });
+
     const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
     ui.start('#firebaseui-auth-container', {
@@ -19,10 +27,15 @@ export default createComponent({
       ],
       callbacks: {
         signInSuccessWithAuthResult: () => {
+          signin.value = true;
           return false;
         },
       },
     });
+
+    return {
+      signin,
+    };
   },
 });
 </script>
