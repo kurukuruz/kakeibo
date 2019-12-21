@@ -1,6 +1,12 @@
 <template>
   <div>
     <v-toolbar flat>
+      <v-btn fab text
+        @click="toggleType"
+      >
+        <v-icon v-if="isMonth">mdi-calendar</v-icon>
+        <v-icon v-else>mdi-calendar-month</v-icon>
+      </v-btn>
       <v-toolbar-title>{{focusYearMonth}}</v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -25,7 +31,9 @@
     <v-calendar
       v-model="innerValue"
       ref="calendar"
-      type="month"
+      :type="type"
+      interval-width="17"
+      interval-height="0"
     >
       <template v-slot:day-label="{ date, day }">
         <div @click="focusOn(date)">
@@ -35,6 +43,10 @@
           >{{day}}</v-avatar>
         </div>
       </template>
+
+      <template v-slot:day-header="{ date, day }">
+        <AppCalendarDayHeader :date="date"/>
+      </template>
     </v-calendar>
   </div>
 </template>
@@ -42,10 +54,16 @@
 <script lang="ts">
 import { createComponent, ref, SetupContext, computed, watch, toRefs, reactive } from '@vue/composition-api';
 import { useInnerValue, ValueProps } from '@/commons/inner-value';
+import AppCalendarDayHeader from '@/components/AppCalendarDayHeader.vue';
+
+type CalendarType = 'month' | 'day';
 
 const today = new Date().toISOString().substring(0, 10);
 
 export default createComponent({
+  components: {
+    AppCalendarDayHeader,
+  },
   props: {
     value: {
       type: String,
@@ -68,12 +86,25 @@ export default createComponent({
       }
     }
 
+    const type = ref('month');
+    const isMonth = computed(() => type.value === 'month');
+    function toggleType () {
+      if (type.value === 'month') {
+        type.value = 'day';
+      } else {
+        type.value = 'month';
+      }
+    }
+
     return {
       innerValue,
       focusYearMonth,
       focusOn,
       gotoToday,
       dayColor,
+      type,
+      isMonth,
+      toggleType,
     };
   },
 });
