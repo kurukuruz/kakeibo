@@ -4,7 +4,7 @@ export namespace Division {
   export const INCOME = 'income';
 };
 
-type Document = {
+type WithId = {
   id: string;
 };
 
@@ -13,7 +13,7 @@ export type Book = {
   icon?: string;
 };
 
-export type BookDoc = Book & Document;
+export type BookDoc = Book & WithId;
 
 export type Category = {
   name: string;
@@ -22,7 +22,7 @@ export type Category = {
   division: Division;
 };
 
-export type CategoryDoc = Category & Document;
+export type CategoryDoc = Category & WithId;
 
 export type Entry = {
   date: string;
@@ -32,4 +32,6 @@ export type Entry = {
   division: Division;
 };
 
-export type EntryDoc = Entry & Document;
+export type EntryDoc = Entry & WithId;
+
+export type Document<T> = { [key: string]: T; };

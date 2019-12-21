@@ -24,7 +24,6 @@
           <AppFormDialog
             v-model="dialog"
             :date="focus"
-            :categories="categories"
           />
         </div>
       </v-container>
@@ -37,8 +36,9 @@ import { createComponent, ref, Ref, provide } from '@vue/composition-api';
 import { Category, Book } from '@/repository';
 import { getAllBooks } from '@/repository/dba-books';
 import { getAllCategories } from '@/repository/dba-categories';
-import { BookStoreKey } from '@/store';
+import { BookStoreKey, CategoriesStoreKey } from '@/store';
 import bookStore from '@/store/book';
+import categoriesStore from '@/store/categories';
 import AppNavigation from '@/components/AppNavigation.vue';
 import AppCalendar from '@/components/AppCalendar.vue';
 import AppFormDialog from '@/components/AppFormDialog.vue';
@@ -56,18 +56,15 @@ export default createComponent({
     const dialog = ref(false);
     const focus = ref(today);
 
-    const categories: Ref<Category[]> = ref([]);
-    getAllCategories().then((data) => { categories.value = data; });
-
     function gotoToday () { focus.value = today; }; // debug
 
     provide(BookStoreKey, bookStore());
+    provide(CategoriesStoreKey, categoriesStore());
 
     return {
       nav,
       dialog,
       focus,
-      categories,
       gotoToday,
     };
   },

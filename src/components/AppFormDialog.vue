@@ -50,13 +50,12 @@ import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import amountFilter from '@/filters/amount-filter';
 import { CategoryDoc, Division, Entry } from '@/repository';
 import { registerEntry } from '@/repository/dba-entries';
-import { typicalInjection, BookStoreKey } from '@/store';
+import { typicalInjection, BookStoreKey, CategoriesStoreKey } from '@/store';
 import AppCategorySelect from '@/components/AppCategorySelect.vue';
 import Calculator from '@/components/Calculator.vue';
 
 interface Props extends ValueProps<boolean> {
   date: string;
-  categories: CategoryDoc[],
 }
 
 export default createComponent({
@@ -75,10 +74,6 @@ export default createComponent({
     date: {
       type: String,
       default: '',
-    },
-    categories: {
-      type: Array,
-      default: () => [],
     },
   },
   setup: (props: Props, context: SetupContext) => {
@@ -101,7 +96,8 @@ export default createComponent({
       }
     }
 
-    const categoriesShown = computed(() => props.categories.filter(cate => cate.division === division.value));
+    const { allCategoriesList } = typicalInjection(CategoriesStoreKey);
+    const categoriesShown = computed(() => allCategoriesList.value.filter(cate => cate.division === division.value));
 
     const { bookId } = typicalInjection(BookStoreKey);
 

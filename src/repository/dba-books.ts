@@ -1,7 +1,7 @@
-import { Book, BookDoc } from './index';
+import { Book, BookDoc, Document } from './index';
 
 export async function getAllBooks (): Promise<BookDoc[]> {
-  const data: { [key: string]: Book } = {
+  const data: Document<Book> = {
     'default': { name: '家計簿', icon: 'mdi-notebook' },
     'hoge': { name: 'オタク活動', icon: 'mdi-ticket' },
     'fuga': { name: '投資', icon: 'mdi-currency-usd' },
