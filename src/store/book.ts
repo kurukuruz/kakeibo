@@ -1,10 +1,10 @@
 import { ref, Ref, computed } from '@vue/composition-api';
-import { Book } from '@/repository';
+import { BookDoc } from '@/repository';
 
 export default function bookStore () {
-  const book: Ref<Book | undefined> = ref(undefined);
+  const book: Ref<BookDoc | undefined> = ref(undefined);
 
-  function setBook (newBook: Book) {
+  function setBook (newBook: BookDoc) {
     book.value = newBook;
   }
 

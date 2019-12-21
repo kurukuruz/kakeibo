@@ -45,10 +45,10 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref, watch, SetupContext, computed } from '@vue/composition-api';
+import { createComponent, ref, watch, SetupContext, computed, Ref } from '@vue/composition-api';
 import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import amountFilter from '@/filters/amount-filter';
-import { Category, Division, Entry } from '@/repository';
+import { CategoryDoc, Division, Entry } from '@/repository';
 import { registerEntry } from '@/repository/dba-entries';
 import { typicalInjection, BookStoreKey } from '@/store';
 import AppCategorySelect from '@/components/AppCategorySelect.vue';
@@ -56,7 +56,7 @@ import Calculator from '@/components/Calculator.vue';
 
 interface Props extends ValueProps<boolean> {
   date: string;
-  categories: Category[],
+  categories: CategoryDoc[],
 }
 
 export default createComponent({
@@ -84,7 +84,7 @@ export default createComponent({
   setup: (props: Props, context: SetupContext) => {
     const { innerValue } = useInnerValue(props, context);
 
-    const division = ref(Division.PAYOUT);
+    const division: Ref<Division> = ref(Division.PAYOUT);
     const divisionName = computed(() => {
       switch (division.value) {
         case Division.PAYOUT: return '支出';

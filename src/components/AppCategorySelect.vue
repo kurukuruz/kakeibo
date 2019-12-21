@@ -16,11 +16,11 @@
 <script lang="ts">
 import { createComponent, SetupContext, ref, watch, computed } from '@vue/composition-api';
 import { useInnerValue, ValueProps } from '@/commons/inner-value';
-import { Category } from '@/repository';
+import { CategoryDoc } from '@/repository';
 import AppCategorySelectItem from '@/components/AppCategorySelectItem.vue';
 
 interface Props extends ValueProps<string> {
-  categories: Category[];
+  categories: CategoryDoc[];
 }
 
 export default createComponent({

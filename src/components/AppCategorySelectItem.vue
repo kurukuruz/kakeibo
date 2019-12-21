@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import { createComponent, SetupContext, ref, watch, computed } from '@vue/composition-api';
-import { Category } from '@/repository';
 
 export default createComponent({
   props: {

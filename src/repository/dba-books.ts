@@ -1,10 +1,12 @@
-import { Book } from './index';
+import { Book, BookDoc } from './index';
 
-export async function getAllBooks (): Promise<Book[]> {
-  // mock
-  return [
-    { id: 'default', name: '家計簿', icon: 'mdi-notebook' },
-    { id: 'hoge', name: 'オタク活動', icon: 'mdi-ticket' },
-    { id: 'fuga', name: '投資', icon: 'mdi-currency-usd' },
-  ];
+export async function getAllBooks (): Promise<BookDoc[]> {
+  const data: { [key: string]: Book } = {
+    'default': { name: '家計簿', icon: 'mdi-notebook' },
+    'hoge': { name: 'オタク活動', icon: 'mdi-ticket' },
+    'fuga': { name: '投資', icon: 'mdi-currency-usd' },
+  };
+  return Object.entries(data).map(e => {
+    return { id: e[0], ...e[1] };
+  });
 }

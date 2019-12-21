@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { createComponent, ref, Ref } from '@vue/composition-api';
-import { Book } from '@/repository';
+import { BookDoc } from '@/repository';
 import { getAllBooks } from '@/repository/dba-books';
 import { typicalInjection, BookStoreKey } from '@/store';
 
@@ -38,7 +38,7 @@ export default createComponent({
   setup: () => {
     const item = ref(0);
 
-    const books: Ref<Book[]> = ref([]);
+    const books: Ref<BookDoc[]> = ref([]);
     getAllBooks().then((data) => {
       books.value = data;
       selectBook(0);
