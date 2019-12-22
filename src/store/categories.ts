@@ -12,15 +12,20 @@ export default function categoriesStore () {
   const allCategoriesList = computed(() => {
     return Object.entries(categories.value).map<CategoryDoc>(entry => {
       return { id: entry[0], ...entry[1] };
-    });
+    }).sort((a, b) => a.order - b.order);
   });
 
+  function refreshCategoriesList (bookId: string) {
+    getAllCategories(bookId).then((data) => { categories.value = data; });
+  }
+
   // データ取得開始
-  getAllCategories().then((data) => { categories.value = data; });
+  refreshCategoriesList('default');
 
   return {
     getCategoryById,
     allCategoriesList,
+    refreshCategoriesList,
   };
 }
 

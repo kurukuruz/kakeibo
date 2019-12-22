@@ -21,6 +21,7 @@ export type Category = {
   icon?: string;
   color: string;
   division: Division;
+  order: number;
 };
 
 export type CategoryDoc = Category & WithId;

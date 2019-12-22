@@ -32,7 +32,7 @@
 import { createComponent, ref, Ref } from '@vue/composition-api';
 import { BookDoc } from '@/repository';
 import { getAllBooks } from '@/repository/dba-books';
-import { typicalInjection, BookStoreKey } from '@/store';
+import { typicalInjection, BookStoreKey, CategoriesStoreKey } from '@/store';
 
 export default createComponent({
   setup: () => {
@@ -44,9 +44,11 @@ export default createComponent({
       selectBook(0);
     });
 
-    const { setBook } = typicalInjection(BookStoreKey);
+    const { setBook, bookId } = typicalInjection(BookStoreKey);
+    const { refreshCategoriesList } = typicalInjection(CategoriesStoreKey);
     function selectBook (index: number) {
       setBook(books.value[index]);
+      refreshCategoriesList(bookId.value);
     }
 
     return {
