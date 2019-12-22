@@ -11,6 +11,7 @@ type WithId = {
 export type Book = {
   name: string;
   icon?: string;
+  order: number;
 };
 
 export type BookDoc = Book & WithId;
