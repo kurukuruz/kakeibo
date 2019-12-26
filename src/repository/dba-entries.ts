@@ -7,12 +7,15 @@ export async function registerEntry (bookId: string, entry: Entry) {
     .collection('entries').add(entry);
 }
 
-export async function getEntriesByDate (date: string): Promise<EntryDoc[]> {
-  const data: Document<Entry> = {
-    'hoge': { date: date, division: 'payout', categoryId: 'hoge', memo: 'CoCo壱番屋', amount: 860 },
-    'foo': { date: date, division: 'payout', categoryId: 'foo', memo: 'manacaチャージ', amount: 5000 },
-  };
-  return Object.entries(data).map(e => {
-    return { id: e[0], ...e[1] };
+export async function getEntriesByDate (bookId: string, date: string): Promise<EntryDoc[]> {
+  const snapshot = await firebase.firestore()
+    .collection('books').doc(bookId)
+    .collection('entries').where('date', '==', date)
+    .get();
+
+  const data: EntryDoc[] = snapshot.docs.map(doc => {
+    return { id: doc.id, ...(doc.data() as Entry) };
   });
+
+  return data;
 }

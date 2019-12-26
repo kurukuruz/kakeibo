@@ -19,7 +19,7 @@
 import { createComponent, watch, computed, Ref, ref } from '@vue/composition-api';
 import { EntryDoc } from '../repository';
 import { getEntriesByDate } from '@/repository/dba-entries';
-import { typicalInjection, CategoriesStoreKey } from '@/store';
+import { typicalInjection, CategoriesStoreKey, BookStoreKey } from '@/store';
 import amountFilter from '@/filters/amount-filter';
 
 type Props = {
@@ -39,8 +39,10 @@ export default createComponent({
   setup: (props: Props) => {
     const dateComputed = computed(() => props.date);
     watch(dateComputed, (newDate: string) => {
-
+      getEntries(newDate);
     });
+
+    const { bookId } = typicalInjection(BookStoreKey);
 
     const { getCategoryById } = typicalInjection(CategoriesStoreKey);
     function getCategoryName (id: string): string {
@@ -54,9 +56,15 @@ export default createComponent({
     }
 
     const entries: Ref<EntryDoc[]> = ref([]);
-    getEntriesByDate(dateComputed.value).then(data => {
-      entries.value = data;
-    });
+    function getEntries (date: string) {
+      entries.value = [];
+      getEntriesByDate(bookId.value, date).then(data => {
+        entries.value = data;
+      });
+    }
+
+    // 初期データ
+    getEntries(dateComputed.value);
 
     return {
       getCategoryName,
