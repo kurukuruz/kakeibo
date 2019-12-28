@@ -36,12 +36,11 @@
       interval-height="0"
     >
       <template v-slot:day-label="{ date, day }">
-        <div @click="focusOn(date)">
-          <v-avatar
-            :color="dayColor(date)"
-            size="36"
-          >{{day}}</v-avatar>
-        </div>
+        <AppCalendarDayLabel
+          @click="focusOn(date)"
+          :day="day"
+          :avatar-color="dayColor(date)"
+        />
       </template>
 
       <template v-slot:day-header="{ date, day }">
@@ -55,6 +54,7 @@
 import { createComponent, ref, SetupContext, computed, watch, toRefs, reactive } from '@vue/composition-api';
 import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import AppCalendarDayHeader from '@/components/AppCalendarDayHeader.vue';
+import AppCalendarDayLabel from '@/components/AppCalendarDayLabel.vue';
 
 type CalendarType = 'month' | 'day';
 
@@ -63,6 +63,7 @@ const today = new Date().toISOString().substring(0, 10);
 export default createComponent({
   components: {
     AppCalendarDayHeader,
+    AppCalendarDayLabel,
   },
   props: {
     value: {
