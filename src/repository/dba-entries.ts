@@ -1,10 +1,15 @@
 import firebase from 'firebase/app';
-import { Entry, Division, EntryDoc, Document } from './index';
+import { Entry, Division, EntryDoc, Document, WithTimestamp } from './index';
 
 export async function registerEntry (bookId: string, entry: Entry) {
+  const data: Entry & WithTimestamp = {
+    ...entry,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
   firebase.firestore()
     .collection('books').doc(bookId)
-    .collection('entries').add(entry);
+    .collection('entries').add(data);
 }
 
 export async function getEntriesByDate (bookId: string, date: string): Promise<EntryDoc[]> {

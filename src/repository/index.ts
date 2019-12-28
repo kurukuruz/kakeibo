@@ -8,6 +8,11 @@ type WithId = {
   id: string;
 };
 
+export type WithTimestamp = {
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export type Book = {
   name: string;
   icon?: string;
