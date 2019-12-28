@@ -18,8 +18,13 @@ export async function getEntriesByDate (bookId: string, date: string): Promise<E
     .collection('entries').where('date', '==', date)
     .get();
 
+  snapshot.docs.map(doc => doc.data() as Entry & WithTimestamp).forEach(d => console.log(d));
   const data: EntryDoc[] = snapshot.docs.map(doc => {
-    return { id: doc.id, ...(doc.data() as Entry) };
+    return { id: doc.id,
+      ...(doc.data() as Entry),
+      createdAt: doc.data().createdAt.toDate(),
+      updatedAt: doc.data().updatedAt.toDate(),
+    };
   });
 
   return data;

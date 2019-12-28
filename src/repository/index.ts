@@ -39,6 +39,6 @@ export type Entry = {
   division: Division;
 };
 
-export type EntryDoc = Entry & WithId;
+export type EntryDoc = Entry & WithId & WithTimestamp;
 
 export type Document<T> = { [key: string]: T; };

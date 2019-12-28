@@ -59,7 +59,8 @@ export default createComponent({
     function getEntries (date: string) {
       entries.value = [];
       getEntriesByDate(bookId.value, date).then(data => {
-        entries.value = data;
+        entries.value =
+          data.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
       });
     }
 
