@@ -38,7 +38,7 @@
       <template v-slot:day-label="{ date, day }">
         <AppCalendarDayLabel
           @click="focusOn(date)"
-          :day="day"
+          :date="date"
           :avatar-color="dayColor(date)"
         />
       </template>
