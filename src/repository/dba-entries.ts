@@ -28,3 +28,14 @@ export async function getEntriesByDate (bookId: string, date: string): Promise<E
 
   return data;
 }
+
+export async function getEntriesByYearMonth (bookId: string, yearMonth: string): Promise<Entry[]> {
+  const snapshot = await firebase.firestore()
+    .collection('books').doc(bookId)
+    .collection('entries').where('date', '>', yearMonth + '-00').where('date', '<', yearMonth + '-32')
+    .get();
+
+  const data: Entry[] = snapshot.docs.map(doc => doc.data() as Entry);
+
+  return data;
+}

@@ -16,21 +16,28 @@
     <v-content>
       <v-container>
         <AppCalendar v-model="focus" />
-        <div class="debug">
-          <v-btn block large @click="dialog = true">
-            <v-icon>mdi-square-edit-outline</v-icon>
-          </v-btn>
-          <AppFormDialogFull
-            v-if="isSmall"
-            v-model="dialog"
-            :date="focus"
-          />
-          <AppFormDialog
-            v-else
-            v-model="dialog"
-            :date="focus"
-          />
-        </div>
+        <v-row>
+          <v-col>
+            <MonthTotal :date="focus" />
+          </v-col>
+          <v-col>
+            <div class="debug">
+              <v-btn block large @click="dialog = true">
+                <v-icon>mdi-square-edit-outline</v-icon>
+              </v-btn>
+              <AppFormDialogFull
+                v-if="isSmall"
+                v-model="dialog"
+                :date="focus"
+              />
+              <AppFormDialog
+                v-else
+                v-model="dialog"
+                :date="focus"
+              />
+            </div>
+          </v-col>
+        </v-row>
       </v-container>
     </v-content>
   </v-app>
@@ -49,6 +56,7 @@ import AppNavigation from '@/components/AppNavigation.vue';
 import AppCalendar from '@/components/AppCalendar.vue';
 import AppFormDialog from '@/components/AppFormDialog.vue';
 import AppFormDialogFull from '@/components/AppFormDialogFull.vue';
+import MonthTotal from '@/components/MonthTotal.vue';
 
 const today = new Date().toISOString().substring(0, 10);
 
@@ -58,6 +66,7 @@ export default createComponent({
     AppCalendar,
     AppFormDialog,
     AppFormDialogFull,
+    MonthTotal,
   },
   setup: (props, context: SetupContext) => {
     const nav = ref(false);
