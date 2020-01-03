@@ -27,6 +27,12 @@
         <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
 
+      <v-progress-linear
+        :active="isLoading"
+        indeterminate
+        absolute
+        bottom
+      ></v-progress-linear>
     </v-toolbar>
     <v-calendar
       v-model="innerValue"
@@ -55,6 +61,7 @@ import { createComponent, ref, SetupContext, computed, watch, toRefs, reactive }
 import { useInnerValue, ValueProps } from '@/commons/inner-value';
 import AppCalendarDayHeader from '@/components/AppCalendarDayHeader.vue';
 import AppCalendarDayLabel from '@/components/AppCalendarDayLabel.vue';
+import { typicalInjection, LoadingStoreKey } from '@/store';
 
 type CalendarType = 'month' | 'day';
 
@@ -87,6 +94,8 @@ export default createComponent({
       }
     }
 
+    const { isLoading } = typicalInjection(LoadingStoreKey);
+
     const type = ref('month');
     const isMonth = computed(() => type.value === 'month');
     function toggleType () {
@@ -106,6 +115,7 @@ export default createComponent({
       type,
       isMonth,
       toggleType,
+      isLoading,
     };
   },
 });

@@ -14,7 +14,7 @@
 import { createComponent, SetupContext, computed, ref, Ref } from '@vue/composition-api';
 import { EntryDoc } from '../repository';
 import { getEntriesByDate } from '@/repository/dba-entries';
-import { typicalInjection, BookStoreKey } from '@/store';
+import { typicalInjection, BookStoreKey, LoadingStoreKey } from '@/store';
 import amountFilter from '@/filters/amount-filter';
 
 type Props = {
@@ -57,10 +57,17 @@ export default createComponent({
       }
       return filtered.reduce((acc, value) => acc + value, 0);
     });
+
     // データ取得
-    getEntriesByDate(bookId.value, props.date).then(data => {
-      entries.value = data;
-    });
+    const { pushLoading, popLoading } = typicalInjection(LoadingStoreKey);
+    pushLoading();
+    getEntriesByDate(bookId.value, props.date)
+      .then(data => {
+        entries.value = data;
+      })
+      .finally(() => {
+        popLoading();
+      });
 
     function emitClick (): void {
       context.emit('click');

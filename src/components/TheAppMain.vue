@@ -41,9 +41,10 @@ import { createComponent, ref, Ref, provide, SetupContext, computed } from '@vue
 import { Category, Book } from '@/repository';
 import { getAllBooks } from '@/repository/dba-books';
 import { getAllCategories } from '@/repository/dba-categories';
-import { BookStoreKey, CategoriesStoreKey } from '@/store';
+import { BookStoreKey, CategoriesStoreKey, LoadingStoreKey } from '@/store';
 import bookStore from '@/store/book';
 import categoriesStore from '@/store/categories';
+import loadingStore from '@/store/loading';
 import AppNavigation from '@/components/AppNavigation.vue';
 import AppCalendar from '@/components/AppCalendar.vue';
 import AppFormDialog from '@/components/AppFormDialog.vue';
@@ -67,6 +68,7 @@ export default createComponent({
 
     provide(BookStoreKey, bookStore());
     provide(CategoriesStoreKey, categoriesStore());
+    provide(LoadingStoreKey, loadingStore());
 
     const isSmall = computed(() => {
       switch (context.root.$vuetify.breakpoint.name) {
