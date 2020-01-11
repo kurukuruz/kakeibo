@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { createComponent, SetupContext, computed, ref, Ref } from '@vue/composition-api';
+import { createComponent, SetupContext, computed, ref, Ref, watch } from '@vue/composition-api';
 import { EntryDoc } from '../repository';
 import { getEntriesByDate } from '@/repository/dba-entries';
 import { typicalInjection, BookStoreKey, LoadingStoreKey } from '@/store';
@@ -38,6 +38,10 @@ export default createComponent({
     const day = computed(() => props.date.slice(-2));
 
     const { bookId } = typicalInjection(BookStoreKey);
+    watch(bookId, (newId: string) => {
+      getEntries(newId, props.date);
+    });
+
     const entries: Ref<EntryDoc[]> = ref([]);
     const sumPayout = computed(() => {
       const filtered = entries.value
@@ -58,16 +62,20 @@ export default createComponent({
       return filtered.reduce((acc, value) => acc + value, 0);
     });
 
-    // データ取得
     const { pushLoading, popLoading } = typicalInjection(LoadingStoreKey);
-    pushLoading();
-    getEntriesByDate(bookId.value, props.date)
-      .then(data => {
-        entries.value = data;
-      })
-      .finally(() => {
-        popLoading();
-      });
+    function getEntries (bookId: string, date: string): void {
+      pushLoading();
+      getEntriesByDate(bookId, date)
+        .then(data => {
+          entries.value = data;
+        })
+        .finally(() => {
+          popLoading();
+        });
+    }
+
+    // 初期データ取得
+    getEntries(bookId.value, props.date);
 
     function emitClick (): void {
       context.emit('click');

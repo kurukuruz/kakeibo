@@ -43,6 +43,9 @@ export default createComponent({
     });
 
     const { bookId } = typicalInjection(BookStoreKey);
+    watch(bookId, (newId: string) => {
+      getEntries(dateComputed.value);
+    });
 
     const { getCategoryById } = typicalInjection(CategoriesStoreKey);
     function getCategoryName (id: string): string {
