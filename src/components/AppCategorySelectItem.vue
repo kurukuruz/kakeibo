@@ -6,7 +6,7 @@
     >
       <v-icon dark>{{item.icon}}</v-icon>
     </v-avatar>
-    <span>{{item.name}}</span>
+    <span class="ml-2">{{item.name}}</span>
   </div>
 </template>
 
