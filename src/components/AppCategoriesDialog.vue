@@ -37,7 +37,11 @@
         </v-list>
       </v-card-text>
     </v-card>
-    <AppCategoryEditDialog v-model="editDialog"/>
+    <AppCategoryEditDialog
+      v-model="editDialog"
+      :division="division"
+      :order="categoriesShown.length + 1"
+    />
   </v-dialog>
 </template>
 
@@ -70,6 +74,7 @@ export default createComponent({
       innerValue,
       closeSelf,
       categoriesShown,
+      division,
       divisionName,
       toggleDivision,
     } = useFormDialog(props, context);
@@ -80,6 +85,7 @@ export default createComponent({
       innerValue,
       closeSelf,
       categoriesShown,
+      division,
       divisionName,
       toggleDivision,
       editDialog,

@@ -68,6 +68,7 @@ export function useFormDialog (props: FormDialogProps, context: SetupContext) {
     innerValue,
     categoryId,
     categoriesShown,
+    division,
     divisionName,
     toggleDivision,
     memo,

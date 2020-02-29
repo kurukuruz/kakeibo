@@ -13,3 +13,9 @@ export async function getAllCategories (bookId: string): Promise<Document<Catego
 
   return result;
 }
+
+export async function registerCategory (bookId: string, category: Category) {
+  firebase.firestore()
+    .collection('books').doc(bookId)
+    .collection('categories').add(category);
+}

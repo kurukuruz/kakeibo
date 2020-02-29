@@ -55,7 +55,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text @click="closeSelf">キャンセル</v-btn>
-        <v-btn text>登録</v-btn>
+        <v-btn text @click="register">登録</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -67,6 +67,14 @@ import { FormDialogProps, useFormDialog } from '../commons/form-dialog-core';
 import { useVuetifyColors } from '../commons/vuetify-colors';
 import AppCategorySelectItem from '@/components/AppCategorySelectItem.vue';
 import ColorSelectItem from '@/components/ColorSelectItem.vue';
+import { Category, Division } from '../repository';
+import { typicalInjection, BookStoreKey } from '@/store';
+import { registerCategory } from '@/repository/dba-categories';
+
+interface CategoryEditProps extends FormDialogProps {
+  division: Division,
+  order: number,
+}
 
 export default createComponent({
   components: {
@@ -82,8 +90,16 @@ export default createComponent({
       type: String,
       default: '',
     },
+    division: {
+      type: String,
+      default: 'payout',
+    },
+    order: {
+      type: Number,
+      default: 99,
+    },
   },
-  setup: (props: FormDialogProps, context: SetupContext) => {
+  setup: (props: CategoryEditProps, context: SetupContext) => {
     const {
       innerValue,
       closeSelf,
@@ -102,6 +118,19 @@ export default createComponent({
       icon: '',
       color: color,
     });
+
+    const { bookId } = typicalInjection(BookStoreKey);
+    function register () {
+      const cate: Category = {
+        name: state.name,
+        color: state.color,
+        icon: state.icon,
+        division: props.division,
+        order: props.order,
+      };
+      registerCategory(bookId.value, cate);
+    }
+
     return {
       innerValue,
       closeSelf,
@@ -110,6 +139,7 @@ export default createComponent({
       variants,
       variant,
       state,
+      register,
     };
   },
 });
