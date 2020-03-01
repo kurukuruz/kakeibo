@@ -41,7 +41,7 @@
       interval-width="17"
       interval-height="0"
     >
-      <template v-slot:day-label="{ date, day }">
+      <template v-slot:day-label="{ date }">
         <AppCalendarDayLabel
           @click="focusOn(date)"
           :date="date"
@@ -49,7 +49,7 @@
         />
       </template>
 
-      <template v-slot:day-header="{ date, day }">
+      <template v-slot:day-header="{ date }">
         <AppCalendarDayHeader :date="date"/>
       </template>
     </v-calendar>
