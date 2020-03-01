@@ -10,12 +10,16 @@
         </v-btn>
 
         <v-toolbar-title>Edit Categories</v-toolbar-title>
+
+        <template v-slot:extension>
+          <v-tabs grow>
+            <v-tab @click="changeToPayout">支出</v-tab>
+            <v-tab @click="changeToIncome">収入</v-tab>
+          </v-tabs>
+        </template>
       </v-toolbar>
 
       <v-card-text>
-        <v-btn
-          @click="toggleDivision"
-        >{{divisionName}}<v-icon>mdi-sync</v-icon></v-btn>
         <v-list>
           <v-list-item>
             <v-list-item-content @click="editDialog = true">
@@ -79,6 +83,13 @@ export default createComponent({
       toggleDivision,
     } = useFormDialog(props, context);
 
+    function changeToIncome () {
+      division.value = Division.INCOME;
+    }
+    function changeToPayout () {
+      division.value = Division.PAYOUT;
+    }
+
     const editDialog = ref(false);
 
     return {
@@ -86,7 +97,8 @@ export default createComponent({
       closeSelf,
       categoriesShown,
       division,
-      divisionName,
+      changeToIncome,
+      changeToPayout,
       toggleDivision,
       editDialog,
     };
